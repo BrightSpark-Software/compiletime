@@ -9,6 +9,7 @@
 *
 ****/
 
+import com.brightspark.bootstrap.haxebuilder.HaxeBuilder;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Type;
@@ -143,6 +144,12 @@ class CompileTime
             includeChildPackages: includeChildPackages,
             baseClass: baseClass
         };
+
+        HaxeBuilder.compileTimeClassesSearches.set(listID,{
+            inPackage: inPackage,
+            includeChildPackages: includeChildPackages,
+            baseClass: baseClass
+        });
 
         if (extendsBaseClass!=null)
             return macro CompileTimeClassList.getTyped($v{listID}, $extendsBaseClass);
@@ -285,7 +292,7 @@ class CompileTime
             return;
         }
 
-        static function classMatchesSearch(className:String, classType:ClassType, search:CompileTimeClassSearch):Bool {
+        static public function classMatchesSearch(className:String, classType:ClassType, search:CompileTimeClassSearch):Bool {
             // Check if it belongs to a certain package or subpackage
             if (search.inPackage != null) {
                 if (search.includeChildPackages) {
